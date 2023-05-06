@@ -57,7 +57,7 @@ exports.deleteBlog = async (req, res) => {
   }
 };
 
-exports.likePost = async (req, res) => {
+exports.likeBlog = async (req, res) => {
   try {
     const blogId = req.params.id;
     const userId = req.user;
