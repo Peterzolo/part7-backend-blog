@@ -11,7 +11,7 @@ exports.addPost = async (req, res) => {
       author: user.name,
       title: body.title,
       url: body.url,
-      likes: body.likes,
+      likes: 0,
       userId,
     });
 
@@ -66,11 +66,14 @@ exports.likePost = async (req, res) => {
 };
 
 exports.getBlog = async (req, res) => {
-  const id = req.params.id;
-  const blog = await Blog.findById(id);
-  if (!blog) {
-    return res.status(400).send("Could not fetch blog");
+  try {
+    const id = req.params.id;
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return res.status(400).send("Could not fetch blog");
+    }
+    res.status(200).send({ result: blog });
+  } catch (error) {
+    res.status(500).json(error.message);
   }
-
-  res.status(200).send({ result: blog });
 };
