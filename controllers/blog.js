@@ -59,7 +59,22 @@ exports.deleteBlog = async (req, res) => {
 
 exports.likePost = async (req, res) => {
   try {
-    console.log("Like post works");
+    const blogId = req.params.id;
+    const userId = req.user;
+
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(400).send("Could not find blog to like");
+    }
+
+    if (blog.likes.includes(userId)) {
+      return res.status(400).send("You have already liked this blog");
+    }
+
+    blog.likes.push(userId);
+    await blog.save();
+
+    res.status(200).json({ result: blog });
   } catch (error) {
     res.status(500).json(error);
   }
