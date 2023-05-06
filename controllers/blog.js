@@ -64,3 +64,13 @@ exports.likePost = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+exports.getBlog = async (req, res) => {
+  const id = req.params.id;
+  const blog = await Blog.findById(id);
+  if (!blog) {
+    return res.status(400).send("Could not fetch blog");
+  }
+
+  res.status(200).send({ result: blog });
+};
