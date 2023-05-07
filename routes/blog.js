@@ -13,6 +13,6 @@ blogRouter.post("/", authenticateToken, addPost);
 blogRouter.delete("/:id", authenticateToken, deleteBlog);
 blogRouter.get("/", getBlogs);
 blogRouter.get("/:id", getBlog);
-blogRouter.get("/:id/like", likeBlog);
+blogRouter.put("/:id/like", likeBlog);
 
 module.exports = blogRouter;
