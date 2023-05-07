@@ -3,16 +3,16 @@ const {
   addPost,
   getBlogs,
   deleteBlog,
+  likePost,
   getBlog,
-  likeBlog,
 } = require("../controllers/blog");
 const { authenticateToken } = require("../utils/middleware");
 const blogRouter = express.Router();
 
 blogRouter.post("/", authenticateToken, addPost);
-blogRouter.delete("/:id", authenticateToken, deleteBlog);
+blogRouter.delete("/delete/:id", authenticateToken, deleteBlog);
 blogRouter.get("/", getBlogs);
+blogRouter.put("/:id/like", authenticateToken, likePost);
 blogRouter.get("/:id", getBlog);
-blogRouter.put("/:id/like", likeBlog);
 
 module.exports = blogRouter;

@@ -11,7 +11,7 @@ exports.addPost = async (req, res) => {
       author: user.name,
       title: body.title,
       url: body.url,
-      likes: 0,
+      likes: body.likes,
       userId,
     });
 
@@ -38,10 +38,16 @@ exports.getBlogs = async (req, res) => {
   }
 };
 
+exports.removeBlog = (req, res) => {
+  res.send("Res works");
+};
+
 exports.deleteBlog = async (req, res) => {
   try {
     const id = req.params.id;
+    console.log("GOT HERE ID", id);
     const user = req.user;
+    console.log("USER", user);
     const blog = await Blog.findById(id);
     if (blog.userId.toString() !== user.toString()) {
       return res.status(403).json("You cannot delete this blog");
@@ -57,25 +63,28 @@ exports.deleteBlog = async (req, res) => {
   }
 };
 
-exports.likeBlog = async (req, res) => {
+exports.likePost = async (req, res) => {
   try {
-    const blogId = req.params.id;
+    const id = req.params.id;
     const userId = req.user;
+    const blog = await Blog.findById(id);
 
-    const blog = await Blog.findById(blogId);
     if (!blog) {
-      return res.status(400).send("Could not find blog to like");
+      return res.status(404).json({ error: "Blog not found" });
     }
 
-    if (blog.likes.includes(userId)) {
-      return res.status(400).send("You have already liked this blog");
+    if (blog.likedBy.includes(userId)) {
+      return res.status(400).json({ error: "Blog already liked" });
     }
 
-    blog.likes.push(userId);
+    blog.likes = blog.likes + 1;
+    blog.likedBy.push(userId);
+
     await blog.save();
 
-    res.status(200).json({ result: blog });
+    res.json(blog);
   } catch (error) {
+    console.error(error.message);
     res.status(500).json(error);
   }
 };
@@ -85,10 +94,10 @@ exports.getBlog = async (req, res) => {
     const id = req.params.id;
     const blog = await Blog.findById(id);
     if (!blog) {
-      return res.status(400).send("Could not fetch blog");
+      return res.status.json("Could not find blog");
     }
-    res.status(200).send({ result: blog });
+    res.status(200).json({ result: blog });
   } catch (error) {
-    res.status(500).json(error.message);
+    res.status(500).json(error);
   }
 };
