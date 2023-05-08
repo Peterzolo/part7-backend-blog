@@ -112,8 +112,8 @@ exports.commentOnBlog = async (req, res) => {
       return res.status(404).json({ error: "Blog not found" });
     }
 
-    blog.likes = blog.likes + 1;
-    blog.likedBy.push(userId);
+    blog.likes = req.body.comments;
+    blog.commentedBy.push(userId);
 
     await blog.save();
 
