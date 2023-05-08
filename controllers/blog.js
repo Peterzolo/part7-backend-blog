@@ -127,3 +127,22 @@ exports.commentOnBlog = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+exports.getAllComments = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const blog = await Blog.findById(id).populate(
+      "comments.commentedBy",
+      "username"
+    );
+
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+
+    res.json(blog.comments);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json(error);
+  }
+};
