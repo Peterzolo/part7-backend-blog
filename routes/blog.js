@@ -15,6 +15,6 @@ blogRouter.delete("/delete/:id", authenticateToken, deleteBlog);
 blogRouter.get("/", getBlogs);
 blogRouter.put("/:id/like", authenticateToken, likePost);
 blogRouter.get("/:id", getBlog);
-blogRouter.post("/:id", authenticateToken, commentOnBlog);
+blogRouter.post("/:id/comment", authenticateToken, commentOnBlog);
 
 module.exports = blogRouter;

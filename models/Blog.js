@@ -37,11 +37,9 @@ const BlogSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
-
         content: {
           type: String,
-          minLength: 1,
-          required: true,
+          default: "",
         },
         createdAt: {
           type: Date,
