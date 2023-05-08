@@ -101,3 +101,25 @@ exports.getBlog = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+exports.commentOnBlog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userId = req.user;
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+
+    blog.likes = blog.likes + 1;
+    blog.likedBy.push(userId);
+
+    await blog.save();
+
+    res.json(blog);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json(error);
+  }
+};
