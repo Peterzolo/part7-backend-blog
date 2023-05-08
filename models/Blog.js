@@ -1,36 +1,45 @@
 const mongoose = require("mongoose");
 
-const BlogSchema = new mongoose.Schema({
-  author: {
-    type: String,
-    minLength: 3,
-    required: true,
-  },
-  title: {
-    type: String,
-    minLength: 3,
-    required: true,
-  },
-  url: {
-    type: String,
-    minLength: 3,
-    required: true,
-  },
-  likes: {
-    type: Number,
-    default: 0,
-  },
-  likedBy: [
-    {
+const BlogSchema = new mongoose.Schema(
+  {
+    author: {
+      type: String,
+      minLength: 3,
+      required: true,
+    },
+    title: {
+      type: String,
+      minLength: 3,
+      required: true,
+    },
+    url: {
+      type: String,
+      minLength: 3,
+      required: true,
+    },
+    likes: {
+      type: Number,
+      default: 0,
+    },
+    likedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-  ],
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    comment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comments",
+    },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
 BlogSchema.set("toJSON", {
   transform: (document, returnedObject) => {

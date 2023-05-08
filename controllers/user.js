@@ -33,9 +33,9 @@ exports.addUser = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).populate("blogs");
     if (!users.length) {
-      res.status(400).json("Users not found").populate("blogs");
+      res.status(400).json("Users not found");
     } else {
       res.status(200).json(users);
     }
