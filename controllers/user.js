@@ -35,11 +35,20 @@ exports.getUsers = async (req, res) => {
   try {
     const users = await User.find({});
     if (!users.length) {
-      res.status(400).json("Users not found");
+      res.status(400).json("Users not found").populate("blogs");
     } else {
       res.status(200).json(users);
     }
   } catch (error) {
     res.status(500).json(error);
   }
+};
+
+exports.getUser = async (req, res) => {
+  const id = req.params.id;
+  const user = await User.findById(id).populate("blogs");
+  if (!user) {
+    return res.status(400).json("User not found");
+  }
+  res.status(200).json({ result: user });
 };
